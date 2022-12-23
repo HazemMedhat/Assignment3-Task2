@@ -1,68 +1,84 @@
-#include <bits/stdc++.h>
+#include <iostream>
+#include <string>
 using namespace std;
 
-void print(string str)
+template <class T> class Stack {
+public:
+    Stack();
+    void push(T k);
+    T pop();
+    T topElement();
+    bool isFull();
+    bool isEmpty();
+
+private:
+    int Size = 5;
+    int top;
+    T st[5];
+};
+
+template <class T> Stack<T>::Stack() {
+    top = -1;
+}
+
+template <class T> void Stack<T>::push(T k)
 {
-    map<string, int> m;
-    string word = "";
-    for(int i =0 ; i < str.size();i++)
-    {
-        str[i] = tolower(str[i]);
+    if (isFull()) {
+        cout << "Stack is full\n";
     }
-    auto it = remove_if(str.begin(), str.end(), ::ispunct);
-    str.erase(it, str.end());
-    for (int i = 0; i < str.size(); i++) {
-        if (str[i] == ' ')
-        {
-            if (m.find(word) == m.end())
-            {
-                m.insert(make_pair(word, 1));
-                word = "";
-            }
-            else
-            {
-                m[word]++;
-                word = "";
-            }
-        }
-        else
-        {
-            word += str[i];
-        }
-    }
-    if (m.find(word) == m.end()){
-        m.insert(make_pair(word, 1));
-    }
-    else{
-        m[word]++;
-    }
-    for (auto& it : m) {
-        cout << it.first << " --> "<< it.second << endl;
-    }
+    //cout << "Inserted element " << k << endl;
+    top = top + 1;
+    st[top] = k;
+}
+
+template <class T> bool Stack<T>::isEmpty()
+{
+    if (top == -1)
+        return 1;
+    else
+        return 0;
+}
+
+template <class T> bool Stack<T>::isFull()
+{
+    if (top == (5 - 1))
+        return 1;
+    else
+        return 0;
+}
+
+template <class T> T Stack<T>::pop()
+{
+    T popped_element = st[top];
+    top--;
+    return popped_element;
+}
+
+template <class T> T Stack<T>::topElement()
+{
+    T top_element = st[top];
+    return top_element;
 }
 
 int main()
 {
-    fstream file;
-    string line;
-    cout<<"Enter the file name: ";
-    string n;
-    cin>>n;
-    file.open(n+".txt",ios::app);
-    cout<<"start writing your text and if you finished press 0: "<<endl;
-    string str;
-    while(file)
-    {
-        getline(cin,line);
+    Stack<int> integer_stack;
+    Stack<string> string_stack;
+    integer_stack.push(2);
+    integer_stack.push(54);
+    integer_stack.push(255);
 
-        if(line == "0")
-            break;
+    cout << integer_stack.pop() << " is removed from stack"
+         << endl;
 
-        file << line << endl;
-        str = line;
-    }
-    file.close();
+    cout << string_stack.pop() << " is removed from stack "
+         << endl;
 
-    print(str);
+    cout << "Top element is " << integer_stack.topElement()
+         << endl;
+
+    cout << "Top element is " << string_stack.topElement()
+         << endl;
+
     return 0;
 }
